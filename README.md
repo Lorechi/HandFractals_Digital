@@ -43,9 +43,21 @@ Vite writes the static site to `dist/`.
 
 ## Deploy
 
-Deploy the current build to the `gh-pages` branch:
+This repo deploys automatically to GitHub Pages with GitHub Actions.
+
+1. In GitHub, open this repository's **Settings > Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Push to the `main` branch.
+
+The site will be published at:
+
+```text
+https://lorechi.github.io/HandFractals_Digital/
+```
+
+To check the same production build locally:
 
 ```bash
 npx yarn build
-npx yarn deploy
+npx yarn preview
 ```

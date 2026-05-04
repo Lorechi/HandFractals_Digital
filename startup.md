@@ -1,9 +1,9 @@
 # HandFractal Starten und Bauen
 
-Die eigentliche App liegt im Unterordner `HandFractal`.
+Die eigentliche App liegt direkt in diesem Repository-Ordner.
 
 ```powershell
-cd C:\Users\Loren\Documents\HandFractal\HandFractal
+cd C:\Users\Loren\Documents\GitHub\HandFractals-Digital\HandFractals_Digital
 ```
 
 ## Abhaengigkeiten installieren
@@ -47,11 +47,11 @@ npx yarn preview
 ## GitHub Pages
 
 Fuer GitHub Pages muss Vite in `vite.config.ts` den richtigen Base-Pfad kennen.
-Wenn das GitHub-Repo z. B. `HandFractal` heisst, sollte dort stehen:
+Dieses Repository heisst `HandFractals_Digital`, deshalb steht dort:
 
 ```ts
 export default defineConfig({
-  base: '/HandFractal/',
+  base: '/HandFractals_Digital/',
   server: {
     port: 3000
   },
@@ -65,10 +65,16 @@ Danach erneut bauen:
 npx yarn build
 ```
 
-Der Ordner `dist/` ist der Ordner, der fuer statisches Hosting bzw. GitHub Pages deployed werden muss.
+Das Deployment laeuft automatisch ueber GitHub Actions, sobald du nach `main` pushst.
 
-Falls mit dem Paket `gh-pages` deployed werden soll:
+In GitHub muss einmalig eingestellt werden:
 
-```powershell
-npx gh-pages -d dist
+1. Repository oeffnen
+2. Settings > Pages
+3. Source auf `GitHub Actions` stellen
+
+Danach wird die Seite hier erreichbar sein:
+
+```text
+https://lorechi.github.io/HandFractals_Digital/
 ```
