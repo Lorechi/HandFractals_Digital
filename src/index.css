@@ -36,7 +36,11 @@ body {
 }
 
 .video {
-  display: none;
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .camera-canvas {

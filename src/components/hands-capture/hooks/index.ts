@@ -98,6 +98,41 @@ const getCoverLayout = (
   return { scale, drawWidth, drawHeight, offsetX, offsetY };
 };
 
+const getImageSize = (image: CanvasImageSource) => {
+  if (image instanceof HTMLVideoElement) {
+    return {
+      width: image.videoWidth || image.width,
+      height: image.videoHeight || image.height,
+    };
+  }
+
+  if (image instanceof HTMLImageElement) {
+    return {
+      width: image.naturalWidth || image.width,
+      height: image.naturalHeight || image.height,
+    };
+  }
+
+  if (image instanceof SVGImageElement) {
+    return {
+      width: image.width.baseVal.value,
+      height: image.height.baseVal.value,
+    };
+  }
+
+  if ('displayWidth' in image && 'displayHeight' in image) {
+    return {
+      width: image.displayWidth,
+      height: image.displayHeight,
+    };
+  }
+
+  return {
+    width: image.width,
+    height: image.height,
+  };
+};
+
 const drawMirroredImage = (
   ctx: CanvasRenderingContext2D,
   image: CanvasImageSource,
@@ -444,8 +479,12 @@ function useGestureRecognition({videoElement, canvasEl}: IHandGestureLogic) {
 
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
-      const sourceWidth = results.image.width;
-      const sourceHeight = results.image.height;
+      const { width: sourceWidth, height: sourceHeight } = getImageSize(results.image);
+
+      if (!sourceWidth || !sourceHeight) {
+        return;
+      }
+
       const { drawWidth, drawHeight, offsetX, offsetY } = getCoverLayout(
         sourceWidth,
         sourceHeight,
