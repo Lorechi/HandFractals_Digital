@@ -78,3 +78,20 @@ Danach wird die Seite hier erreichbar sein:
 ```text
 https://lorechi.github.io/HandFractals_Digital/
 ```
+
+## Wenn die GitHub-Seite leer bleibt
+
+Wenn DevTools im Browser noch diese Zeile zeigt:
+
+```html
+<script type="module" src="/src/main.tsx"></script>
+```
+
+dann deployed GitHub Pages noch den Repository-Ordner direkt. Das ist falsch fuer Vite.
+In **Settings > Pages** muss **Source** wirklich auf **GitHub Actions** stehen.
+
+Der richtige Production-Build zeigt stattdessen ungefaehr so etwas:
+
+```html
+<script type="module" src="/HandFractals_Digital/assets/index-....js"></script>
+```

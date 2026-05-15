@@ -98,6 +98,22 @@ const getCoverLayout = (
   return { scale, drawWidth, drawHeight, offsetX, offsetY };
 };
 
+const drawMirroredImage = (
+  ctx: CanvasRenderingContext2D,
+  image: CanvasImageSource,
+  offsetX: number,
+  offsetY: number,
+  drawWidth: number,
+  drawHeight: number,
+  canvasWidth: number
+) => {
+  ctx.save();
+  ctx.translate(canvasWidth, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(image, canvasWidth - offsetX - drawWidth, offsetY, drawWidth, drawHeight);
+  ctx.restore();
+};
+
 type Point = {
   x: number;
   y: number;
@@ -446,7 +462,7 @@ function useGestureRecognition({videoElement, canvasEl}: IHandGestureLogic) {
         const mappedHands = results.multiHandLandmarks.map((landmarks) => {
           const displayLandmarks = landmarks.map((landmark: NormalizedLandmark) => ({
             ...landmark,
-            x: (landmark.x * sourceWidth * (drawWidth / sourceWidth) + offsetX) / canvasWidth,
+            x: (canvasWidth - (landmark.x * drawWidth + offsetX)) / canvasWidth,
             y: (landmark.y * sourceHeight * (drawHeight / sourceHeight) + offsetY) / canvasHeight,
           }));
           const handPoints = displayLandmarks.map((landmark: NormalizedLandmark) => ({
@@ -471,7 +487,15 @@ function useGestureRecognition({videoElement, canvasEl}: IHandGestureLogic) {
           maskCtx.clearRect(0, 0, canvasWidth, canvasHeight);
           drawHandMask(maskCtx, handPoints, window.HAND_CONNECTIONS);
           maskCtx.globalCompositeOperation = 'source-in';
-          maskCtx.drawImage(results.image, offsetX, offsetY, drawWidth, drawHeight);
+          drawMirroredImage(
+            maskCtx,
+            results.image,
+            offsetX,
+            offsetY,
+            drawWidth,
+            drawHeight,
+            canvasWidth
+          );
           maskCtx.globalCompositeOperation = 'source-over';
           applyLuminanceAlpha(maskCtx, bounds.x, bounds.y, bounds.width, bounds.height);
           maskCtx.restore();
